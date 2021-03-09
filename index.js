@@ -1,7 +1,5 @@
 var express = require("express");
 var ParseServer = require("parse-server").ParseServer;
-var ParseDashboard = require("parse-dashboard");
-var dbRunner = require("mongodb-runner");
 var app = express();
 var config = {};
 try {
@@ -34,6 +32,8 @@ function startServer(err) {
   app.listen(process.env.port || config.port || "1337");
 }
 if (process.env.TEST === "ON") {
+  var dbRunner = require("mongodb-runner");
+  var ParseDashboard = require("parse-dashboard");
   var dashboard = new ParseDashboard({
     apps: [
       {
