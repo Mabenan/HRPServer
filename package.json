@@ -1,0 +1,33 @@
+{
+  "name": "hrpserver",
+  "version": "1.0.0",
+  "description": "Parse based Home Resource Planing Server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "cross-env TEST='ON' node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Mabenan/HRPServer.git"
+  },
+  "keywords": [
+    "HRP",
+    "Parse"
+  ],
+  "author": "Mabenan",
+  "license": "BSD-2-Clause",
+  "bugs": {
+    "url": "https://github.com/Mabenan/HRPServer/issues"
+  },
+  "homepage": "https://github.com/Mabenan/HRPServer#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "parse": "^3.1.0",
+    "parse-server": "^4.5.0"
+  },
+  "devDependencies": {
+    "mongodb-runner": "^4.8.3",
+    "parse-dashboard": "^2.1.0"
+  }
+}
