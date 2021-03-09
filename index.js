@@ -1,7 +1,7 @@
 var fs = require("fs");
 
-if(process.env.TOLOG === "ON"){
-  var dir = __dirname + '/log',
+if (process.env.TOLOG === "ON"){
+  var dir = __dirname + '/log';
   if (!fs.existsSync(dir)){
       fs.mkdirSync(dir);
   }
@@ -22,8 +22,6 @@ try {
 } catch (err) {
   console.log("no config found use default");
 }
-
-process.env.DEBUG = "*";
 
 function startServer(err) {
   var api = new ParseServer({

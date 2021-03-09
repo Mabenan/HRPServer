@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "cross-env TEST='ON' node index.js"
+    "test": "cross-env TEST='ON' DEBUG='*' node index.js"
   },
   "repository": {
     "type": "git",
