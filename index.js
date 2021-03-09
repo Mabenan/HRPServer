@@ -1,3 +1,18 @@
+var fs = require("fs");
+
+if(process.env.TOLOG === "ON"){
+  var dir = __dirname + '/log',
+  if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+  }
+  var access = fs.createWriteStream(dir + '/node.access.log', { flags: 'a' })
+      , error = fs.createWriteStream(dir + '/node.error.log', { flags: 'a' });
+
+// redirect stdout / stderr
+proc.stdout.pipe(access);
+proc.stderr.pipe(error);
+}
+
 var express = require("express");
 var ParseServer = require("parse-server").ParseServer;
 var app = express();
