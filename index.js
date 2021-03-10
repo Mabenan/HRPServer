@@ -14,6 +14,7 @@ proc.stderr.pipe(error);
 }
 
 var express = require("express");
+var cors = require("cors");
 var ParseServer = require("parse-server").ParseServer;
 var app = express();
 var config = {};
@@ -40,7 +41,7 @@ function startServer(err) {
       "http://127.0.0.1:1337/hrp",
       allowHeaders: ['X-Parse-Installation-Id']
   });
-
+  app.use(cors);
   app.use(process.env.route || config.route || "/hrp", api);
 
   app.listen(process.env.port || config.port || "1337");
