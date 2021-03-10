@@ -1,7 +1,3 @@
-if (typeof PhusionPassenger !== "undefined") {
-  PhusionPassenger.configure({ autoInstall: false });
-}
-
 var express = require("express");
 var cors = require("cors");
 var ParseServer = require("parse-server").ParseServer;
@@ -22,10 +18,6 @@ function startServer(err) {
   app.use(cors);
   app.use(process.env.ROUTE || "/hrp", api);
 
-  if (typeof PhusionPassenger !== "undefined") {
-    app.listen("passenger");
-  } else {
     app.listen(process.env.PORT || "1337");
-  }
 }
 startServer();
