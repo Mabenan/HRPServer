@@ -12,8 +12,7 @@ function startServer(err) {
     serverURL: process.env.PARSE_SERVERURL || "http://localhost:1337/hrp",
     publicServerURL:
       process.env.PARSE_PUBLICSERVERURL || "http://127.0.0.1:1337/hrp",
-    allowHeaders: ["X-Parse-Installation-Id"],
-    allowOrigin: ["*"]
+    allowHeaders: ["X-Parse-Installation-Id"]
   });
   app.use(process.env.ROUTE || "/hrp", api);
 
