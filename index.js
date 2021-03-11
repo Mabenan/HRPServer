@@ -1,5 +1,4 @@
 var express = require("express");
-var cors = require("cors");
 var ParseServer = require("parse-server").ParseServer;
 var app = express();
 
@@ -16,7 +15,6 @@ function startServer(err) {
     allowHeaders: ["X-Parse-Installation-Id"],
     allowOrigin: ["*"]
   });
-  app.use(cors());
   app.use(process.env.ROUTE || "/hrp", api);
 
     app.listen(process.env.PORT || "1337");
