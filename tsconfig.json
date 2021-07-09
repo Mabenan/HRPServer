@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": true,
+        "moduleResolution": "Node",
+        "allowSyntheticDefaultImports": true,
+        "outDir": "./build/",
+        "target": "ES6"
+    },
+    "ts-node": {
+      "files": true
+    },
+    "files": [ "index.ts" ],
+    "include": [ "could/**/*", "decs.d.ts", "data/**/*" ],
+}
