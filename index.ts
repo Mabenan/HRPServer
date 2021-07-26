@@ -11,6 +11,7 @@ import { Recipe } from "./data/Recipe";
 import { Price } from "./data/Price";
 import { Product } from "./data/Product";
 import { Market } from "./data/Market";
+import * as cloud from "./cloud/main";
 var app = express();
 
 
