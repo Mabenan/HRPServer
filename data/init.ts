@@ -26,14 +26,15 @@ export class InitProcess {
             const roleACL = new Parse.ACL();
             roleACL.setPublicReadAccess(true);
             role = new Parse.Role("Admin", roleACL);
+            role = await role.save();
             var pass = randomBytes(20).toString('hex');
-            const user = new HRPUser();
+            var user = new HRPUser();
             user.set("username", "admin");
             user.set("password", pass);
             user.set("email", "admin@admin.com");
-            user.save();
+            user = await user.save();
             role.getUsers().add(user);
-            role.save();
+            role = await role.save();
             console.log("TMPAdmin: " + pass);
         }
         await this.initObject<Process>([
