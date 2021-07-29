@@ -125,5 +125,7 @@ dist
 
 build/*
 
+markets/*
+
 
 config.json

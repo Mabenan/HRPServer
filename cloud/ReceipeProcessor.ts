@@ -37,7 +37,7 @@ export class ReceipeProcessor {
                     var priceConstruct: PriceConstruct
                     eval(Receipt.Market.Interpretation);
                     if (priceConstruct != null) {
-
+                        
                         var priceObject = new Price();
                         priceObject.Name = priceConstruct.name;
                         priceObject.Costs = priceConstruct.price;
