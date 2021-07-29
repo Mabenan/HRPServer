@@ -21,21 +21,28 @@ export class InitProcess {
 
 
     async init() {
-        var role = (await new Parse.Query<Role>("Role").equalTo("name", "Admin").first({ useMasterKey: true }));
-        if (role == undefined) {
+        var roles = (await new Parse.Query<Role>("_Role").equalTo("name", "Admin").find({useMasterKey: true}));
+        if (roles.length == 0) {
             const roleACL = new Parse.ACL();
             roleACL.setPublicReadAccess(true);
-            role = new Parse.Role("Admin", roleACL);
-            role = await role.save();
+            var role = new Parse.Role("Admin", roleACL);
+            role = await role.save(null,{useMasterKey: true});
             var pass = randomBytes(20).toString('hex');
             var user = new HRPUser();
             user.set("username", "admin");
             user.set("password", pass);
             user.set("email", "admin@admin.com");
-            user = await user.save();
+            user = await user.save(null,{useMasterKey: true});
             role.getUsers().add(user);
-            role = await role.save();
+            role = await role.save(null,{useMasterKey: true});
             console.log("TMPAdmin: " + pass);
+        }
+        roles = (await new Parse.Query<Role>("_Role").equalTo("name", "User").find({useMasterKey: true}));
+        if (roles.length == 0) {
+            const roleACL = new Parse.ACL();
+            roleACL.setPublicReadAccess(true);
+            var role = new Parse.Role("User", roleACL);
+            role = await role.save(null,{useMasterKey: true});
         }
         await this.initObject<Process>([
             { name: "Name", type: "String" },
@@ -43,33 +50,63 @@ export class InitProcess {
             { name: "Running", type: "Boolean" },
             { name: "Progress", type: "Number" }
         ], Process, {
-            find: { "*": false, requiresAuthentication: true },
-            get: { "*": false, requiresAuthentication: true },
-            count: { "*": false, requiresAuthentication: true },
-            create: { "*": false, requiresAuthentication: true },
-            update: { "*": false, requiresAuthentication: true },
-            delete: { "*": false, requiresAuthentication: true },
-            addField: { "*": false, requiresAuthentication: true }
+            find: { requiresAuthentication: undefined, 'role:Admin': true },
+            get: {  requiresAuthentication: undefined, 'role:Admin': true },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
         });
         await this.initObject<Ingredient>([
             { name: "Name", type: "String" }
         ], Ingredient, {
-            find: { "*": false, requiresAuthentication: true, 'role:Admin': true }
+            find: { requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            get: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
         });
         await this.initObject<Recipe>([
             { name: "Name", type: "String" },
             { name: "Ingredients", type: "Relation", target: "Ingredient" }
-        ], Recipe);
+        ], Recipe, {
+            find: { requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            get: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
+        });
         await this.initObject<Receipt>([
             { name: "Name", type: "String" },
             { name: "Image", type: "File" },
             { name: "Processed", type: "Boolean", defaultValue: false },
             { name: "Market", type: "Pointer", target: "Market" },
             { name: "Prices", type: "Relation", target: "Price" }
-        ], Receipt);
+        ], Receipt, {
+            find: { requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            get: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
+        });
         await this.initObject<Product>([
             { name: "Name", type: "String" },
-        ], Product);
+        ], Product, {
+            find: { requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            get: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
+        });
         await this.initObject<Price>([
             { name: "Name", type: "String" },
             { name: "Date", type: "Date" }, ,
@@ -77,14 +114,38 @@ export class InitProcess {
             { name: "Product", type: "Pointer", target: "Product" },
             { name: "PossibleProducts", type: "Relation", target: "Product" },
             { name: "NeedsManualIntervention", type: "Boolean", defaultValue: false }
-        ], Price);
+        ], Price, {
+            find: { requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            get: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
+        });
         await this.initObject<Market>([
             { name: "Name", type: "String" },
             { name: "Interpretation", type: "String", defaultValue: "return null;" }
-        ], Market);
+        ], Market, {
+            find: { requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            get: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true, 'role:User': true },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
+        });
         await this.initObject<HRPUser>([
             { name: "ProfilePic", type: "File" }
-        ], HRPUser);
+        ], HRPUser, {
+            find: { requiresAuthentication: undefined, 'role:Admin': true,},
+            get: {  requiresAuthentication: undefined, 'role:Admin': true, },
+            count: {  requiresAuthentication: undefined, 'role:Admin': true, },
+            create: {  requiresAuthentication: undefined, 'role:Admin': true },
+            update: {  requiresAuthentication: undefined, 'role:Admin': true },
+            delete: {  requiresAuthentication: undefined, 'role:Admin': true },
+            addField: {  requiresAuthentication: undefined, 'role:Admin': true }
+        });
 
     }
 
@@ -108,7 +169,7 @@ export class InitProcess {
             }
         });
         if (clp != null) {
-            schema.setCLP();
+            schema.setCLP(clp);
         }
         schemaExist ? await schema.update() : await schema.save();
     }
