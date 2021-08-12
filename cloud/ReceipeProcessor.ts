@@ -1,4 +1,3 @@
-import { Process } from "../data/Process";
 import { Receipt } from "../data/Receipt";
 import { Product } from "../data/Product";
 import { Price } from "../data/Price";
@@ -7,6 +6,7 @@ import async from "async";
 import * as tess from "node-tesseract-ocr";
 import * as fs from "fs";
 import { format, parse } from "date-format-parse";
+import * as ServerManager from "server-manager-api";
 
 class PriceConstruct {
     constructor(public name: String, public price: number, public bio: boolean) { }
@@ -14,7 +14,7 @@ class PriceConstruct {
 
 export class ReceipeProcessor {
 
-    processReceipes(process: Process): Promise<void> {
+    processReceipes(process: ServerManager.Process): Promise<void> {
         return new Promise<void>(async (res, rej) => {
             const processQuery = new Parse.Query<Receipt>("Receipt");
             processQuery.equalTo("Processed", false);

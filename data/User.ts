@@ -9,5 +9,12 @@ export class HRPUser extends Parse.User {
     {
         this.set("ProfilePic", value);
     }
+    public get Points() : Number{
+        return this.get("Points");
+    }
+
+    public set Points(value: Number){
+        this.set("Points", value);
+    }
 
 }
