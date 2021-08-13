@@ -15,6 +15,6 @@
       "files": true
     },
     "files": ["init.ts"],
-    "include": [ "could/**/*", "decs.d.ts", "data/**/*", "init.ts" ],
+    "include": [ "cloud/**/*", "decs.d.ts", "data/**/*", "init.ts" ],
     "exclude": [ "node_modules" ]
 }
